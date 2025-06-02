@@ -2,7 +2,9 @@
 
 An AI-powered trip planning application built with Flask, Firebase, and Groq AI. Plan your perfect trip with intelligent recommendations, budget management, and personalized itineraries.
 
-Live demonstration:
+## 🚀 Live Demo
+
+[![Live Demo](https://img.shields.io/badge/Live-Demo-success?style=for-the-badge)](https://tripai.pythonanywhere.com/)
 
 ## ✨ Features
 
