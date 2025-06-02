@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Register - TripAI{% endblock %}
+
+{% block extra_css %}
+<link href="{{ url_for('static', filename='css/auth.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-6 col-lg-5">
+                <div class="auth-card">
+                    <div class="auth-header text-center">
+                        <div class="auth-logo">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h2>Join TripAI</h2>
+                        <p>Create your account and start planning amazing trips</p>
+                    </div>
+
+                    <form method="POST" class="auth-form" id="registerForm">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                
+                        <div class="form-group mb-3">
+                            <label for="name" class="form-label">
+                                <i class="fas fa-user"></i> Full Name
+                            </label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i> Email Address
+                            </label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <span class="password-toggle" onclick="togglePassword('password')">
+                                    <i class="fas fa-eye" id="toggleIcon1"></i>
+                                </span>
+                            </div>
+                            <div class="password-strength mt-1">
+                                <div class="strength-bar"></div>
+                                <small class="strength-text">Password strength: Weak</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <i class="fas fa-lock"></i> Confirm Password
+                            </label>
+                            <div class="password-input">
+                                <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
+                                <span class="password-toggle" onclick="togglePassword('confirm_password')">
+                                    <i class="fas fa-eye" id="toggleIcon2"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="terms" required>
+                                <label class="form-check-label" for="terms">
+                                    I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 auth-btn">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                    </form>
+
+                    <div class="auth-divider">
+                        <span>Or</span>
+                    </div>
+
+                    <div class="social-login">
+                        <button class="btn btn-outline-secondary w-100 mb-2">
+                            <i class="fab fa-google"></i> Sign up with Google
+                        </button>
+                        <button class="btn btn-outline-secondary w-100">
+                            <i class="fab fa-facebook"></i> Sign up with Facebook
+                        </button>
+                    </div>
+
+                    <div class="auth-footer text-center">
+                        <p>Already have an account? <a href="{{ url_for('login') }}">Sign in here</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 d-none d-md-block">
+                <div class="auth-image">
+                    <div class="auth-benefits">
+                        <h3>Start Your Journey Today</h3>
+                        <div class="benefit-item">
+                            <i class="fas fa-rocket"></i>
+                            <span>Quick 2-minute setup</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-gift"></i>
+                            <span>Free to get started</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Your data is secure</span>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-users"></i>
+                            <span>Join 10,000+ happy travelers</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+<script>
+// Password strength checker
+document.getElementById('password').addEventListener('input', function() {
+    const password = this.value;
+    const strengthBar = document.querySelector('.strength-bar');
+    const strengthText = document.querySelector('.strength-text');
+    
+    let strength = 0;
+    let text = 'Weak';
+    let color = '#ff4757';
+    
+    if (password.length >= 8) strength += 1;
+    if (/[a-z]/.test(password)) strength += 1;
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+    
+    if (strength >= 4) {
+        text = 'Strong';
+        color = '#2ed573';
+    } else if (strength >= 2) {
+        text = 'Medium';
+        color = '#ffa502';
+    }
+    
+    strengthBar.style.width = (strength * 20) + '%';
+    strengthBar.style.backgroundColor = color;
+    strengthText.textContent = `Password strength: ${text}`;
+});
+
+// Form validation
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password').value;
+    
+    if (password !== confirmPassword) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+        return false;
+    }
+});
+</script>
+{% endblock %}

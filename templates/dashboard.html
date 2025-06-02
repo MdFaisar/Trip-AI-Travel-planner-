@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - TripAI{% endblock %}
+
+{% block extra_css %}
+<link href="{{ url_for('static', filename='css/dashboard.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="container mt-4">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="dashboard-title">
+                        <i class="fas fa-tachometer-alt"></i> 
+                        Welcome back, {{ session.user_name }}!
+                    </h1>
+                    <p class="dashboard-subtitle">Manage your trips and plan new adventures</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <a href="{{ url_for('trip_planner') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Plan New Trip
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ trips|length }}</h3>
+                        <p>Total Trips</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ trips|selectattr('status', 'equalto', 'completed')|list|length }}</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-globe-americas"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ trips|map(attribute='destination')|unique|list|length }}</h3>
+                        <p>Destinations</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>{{ trips|map(attribute='duration')|sum }}</h3>
+                        <p>Total Days</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions mb-4">
+            <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+            <div class="row">
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ url_for('trip_planner') }}" class="action-card">
+                        <i class="fas fa-plus-circle"></i>
+                        <h5>Plan New Trip</h5>
+                        <p>Create a new AI-powered itinerary</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="{{ url_for('profile') }}" class="action-card">
+                        <i class="fas fa-user-edit"></i>
+                        <h5>Update Profile</h5>
+                        <p>Manage your account settings</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="#" class="action-card">
+                        <i class="fas fa-share-alt"></i>
+                        <h5>Share Trip</h5>
+                        <p>Share your favorite itinerary</p>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <a href="#" class="action-card">
+                        <i class="fas fa-download"></i>
+                        <h5>Download PDF</h5>
+                        <p>Get offline travel guides</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Trips -->
+        <div class="recent-trips">
+            <div class="section-header">
+                <h3><i class="fas fa-history"></i> Your Recent Trips</h3>
+                {% if trips|length > 6 %}
+                <a href="#" class="view-all-link">View All Trips</a>
+                {% endif %}
+            </div>
+
+            {% if trips %}
+            <div class="row">
+                {% for trip in trips[:6] %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="trip-card">
+                        <div class="trip-card-header">
+                            <div class="trip-destination">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>{{ trip.destination }}</span>
+                            </div>
+                            <div class="trip-status status-{{ trip.status }}">
+                                {{ trip.status.title() }}
+                            </div>
+                        </div>
+                        
+                        <div class="trip-card-body">
+                            <h5 class="trip-title">{{ trip.title }}</h5>
+                            <div class="trip-details">
+                                <div class="detail-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span>{{ trip.start_date }} to {{ trip.end_date }}</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-clock"></i>
+                                    <span>{{ trip.duration }} days</span>
+                                </div>
+                                <div class="detail-item">
+                                    <i class="fas fa-wallet"></i>
+                                    <span>{{ trip.budget.symbol }}{{ "{:,.0f}".format(trip.budget.amount) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="trip-card-footer">
+                            <a href="{{ url_for('view_trip', trip_id=trip.trip_id) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-eye"></i> View Details
+                            </a>
+                            <a href="{{ url_for('download_pdf', trip_id=trip.trip_id) }}" class="btn btn-outline-success btn-sm">
+                                <i class="fas fa-download"></i> PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-content">
+                    <i class="fas fa-suitcase-rolling"></i>
+                    <h4>No trips yet!</h4>
+                    <p>Start planning your first amazing adventure with AI assistance.</p>
+                    <a href="{{ url_for('trip_planner') }}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Plan Your First Trip
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Add some interactivity to the dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stat cards on load
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, 100);
+        }, index * 100);
+    });
+
+    // Add hover effects to trip cards
+    const tripCards = document.querySelectorAll('.trip-card');
+    tripCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-5px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}

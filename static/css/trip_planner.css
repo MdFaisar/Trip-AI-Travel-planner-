@@ -1,0 +1,551 @@
+/* Trip Planner CSS - Modern & Attractive Design */
+
+/* Root Variables */
+:root {
+    --primary-color: #667eea;
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-color: #f093fb;
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --accent-color: #4facfe;
+    --success-color: #00f2fe;
+    --warning-color: #ffecd2;
+    --danger-color: #ff758c;
+    --dark-color: #2c3e50;
+    --light-color: #f8f9fa;
+    --shadow-light: 0 5px 15px rgba(0,0,0,0.08);
+    --shadow-medium: 0 10px 30px rgba(0,0,0,0.15);
+    --shadow-heavy: 0 20px 40px rgba(0,0,0,0.2);
+    --border-radius: 15px;
+    --transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Base Styles */
+.trip-planner-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-attachment: fixed;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.trip-planner-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><defs><radialGradient id="a" cx="50%" cy="40%"><stop offset="0%" stop-color="%23ffffff" stop-opacity="0.1"/><stop offset="100%" stop-color="%23ffffff" stop-opacity="0"/></radialGradient></defs><circle cx="10" cy="10" r="5" fill="url(%23a)"/><circle cx="90" cy="5" r="3" fill="url(%23a)"/><circle cx="70" cy="15" r="4" fill="url(%23a)"/><circle cx="30" cy="18" r="2" fill="url(%23a)"/></svg>') repeat;
+    animation: float 20s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+}
+
+/* Header Styles */
+.planner-header {
+    margin-bottom: 3rem !important;
+    animation: slideInDown 0.8s ease-out;
+}
+
+.planner-header h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.planner-header p.lead {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 300;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.planner-header i {
+    margin-right: 1rem;
+    font-size: 3rem;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Main Card */
+.planner-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-heavy);
+    padding: 3rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 0.8s ease-out 0.2s both;
+}
+
+.planner-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+    transform: rotate(45deg);
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+    100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+/* Form Steps */
+.form-step {
+    display: none;
+    animation: fadeInRight 0.5s ease-out;
+}
+
+.form-step.active {
+    display: block;
+}
+
+.step-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.step-header h3 {
+    color: var(--dark-color);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.step-header h3 i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.step-header p {
+    color: #6c757d;
+    font-size: 1.1rem;
+}
+
+/* Form Controls */
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    transition: var(--transition);
+    background: rgba(255,255,255,0.8);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    background: rgba(255,255,255,1);
+    transform: translateY(-2px);
+}
+
+.form-control.is-invalid {
+    border-color: var(--danger-color);
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Form Labels */
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.form-text {
+    color: #6c757d;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.form-text i {
+    color: var(--accent-color);
+    margin-right: 0.25rem;
+}
+
+/* Travel Style Options */
+.travel-style {
+    margin: 2rem 0;
+}
+
+.style-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.style-option {
+    position: relative;
+}
+
+.style-option input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.style-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem 1rem;
+    background: rgba(255,255,255,0.8);
+    border: 2px solid #e9ecef;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.style-option label::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: var(--transition);
+}
+
+.style-option label:hover::before {
+    left: 100%;
+}
+
+.style-option label:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+    border-color: var(--primary-color);
+}
+
+.style-option input[type="radio"]:checked + label {
+    background: var(--primary-gradient);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
+
+.style-option label i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.style-option input[type="radio"]:checked + label i {
+    color: white;
+    transform: scale(1.1);
+}
+
+.style-option label span {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 0.25rem;
+}
+
+.style-option label small {
+    opacity: 0.8;
+    font-size: 0.875rem;
+}
+
+/* Budget Suggestion */
+.budget-suggestion {
+    margin-top: 1rem;
+    animation: slideInUp 0.5s ease-out;
+}
+
+.budget-suggestion .alert {
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+    border-left: 4px solid var(--accent-color);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: var(--transition);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+}
+
+.btn-outline-secondary {
+    border: 2px solid #6c757d;
+    color: #6c757d;
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Step Footer */
+.step-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+/* Progress Steps */
+.progress-container {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    animation: slideInUp 0.8s ease-out 0.4s both;
+}
+
+.progress-steps {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 1.5rem;
+    transition: var(--transition);
+}
+
+.step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    margin-bottom: 0.5rem;
+}
+
+.step.active .step-circle {
+    background: var(--primary-gradient);
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.step span {
+    font-size: 0.875rem;
+    color: #6c757d;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.step.active span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* Loading Modal */
+.modal-content {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-heavy);
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+}
+
+.modal-body {
+    text-align: center;
+}
+
+.loading-animation {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+
+.loading-animation i {
+    font-size: 4rem;
+    color: var(--primary-color);
+    animation: fly 2s ease-in-out infinite;
+}
+
+@keyframes fly {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(20px) rotate(5deg); }
+    50% { transform: translateX(-10px) rotate(-3deg); }
+    75% { transform: translateX(15px) rotate(2deg); }
+}
+
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    background: #e9ecef;
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.progress-bar {
+    background: var(--primary-gradient);
+    border-radius: 10px;
+    transition: width 0.3s ease;
+}
+
+/* Animations */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .planner-header h1 {
+        font-size: 2.5rem;
+    }
+    
+    .planner-card {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+    }
+    
+    .style-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-container {
+        left: 1rem;
+        right: 1rem;
+        transform: none;
+    }
+    
+    .progress-steps {
+        justify-content: center;
+        padding: 0.75rem 1rem;
+    }
+    
+    .step {
+        margin: 0 0.75rem;
+    }
+    
+    .step-footer {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .step-footer .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .planner-header h1 {
+        font-size: 2rem;
+    }
+    
+    .planner-header p.lead {
+        font-size: 1.1rem;
+    }
+    
+    .step-header h3 {
+        font-size: 1.5rem;
+    }
+}
