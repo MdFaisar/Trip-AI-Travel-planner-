@@ -19,3 +19,4 @@ WTForms==3.0.1
 beautifulsoup4
 gunicorn
 requests
+markdown
